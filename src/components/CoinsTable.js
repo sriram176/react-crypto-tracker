@@ -25,7 +25,7 @@ export function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-export default function CoinsTable() {
+export default function CoinsTable(props) {
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
@@ -34,11 +34,18 @@ export default function CoinsTable() {
   const { currency, symbol } = CryptoState();
 
   const useStyles = makeStyles({
-    row: {
+    row: props.theme.palette.type== 'dark' ? {
       backgroundColor: "#16171a",
       cursor: "pointer",
       "&:hover": {
         backgroundColor: "#131111",
+      },
+      fontFamily: "Montserrat",
+    } : {
+      backgroundColor: "#ffffff",
+      cursor: "pointer",
+      "&:hover": {
+        backgroundColor: "#818485",
       },
       fontFamily: "Montserrat",
     },
@@ -82,9 +89,11 @@ export default function CoinsTable() {
         coin.symbol.toLowerCase().includes(search)
     );
   };
+  console.log(props.theme.palette.type)
+  const colorpick = (props.theme.palette.type == 'light'  ) ? {backgroundColor: ""} : {backgroundColor: "darkgrey"} 
 
   return (
-    <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={props.theme}>
       <Container style={{ textAlign: "center" }}>
         <Typography
           variant="h4"
@@ -103,7 +112,7 @@ export default function CoinsTable() {
             <LinearProgress style={{ backgroundColor: "gold" }} />
           ) : (
             <Table aria-label="simple table">
-              <TableHead style={{ backgroundColor: "#EEBC1D" }}>
+              <TableHead style={colorpick}>
                 <TableRow>
                   {["Coin", "Price", "24h Change", "Market Cap"].map((head) => (
                     <TableCell
@@ -157,7 +166,7 @@ export default function CoinsTable() {
                             >
                               {row.symbol}
                             </span>
-                            <span style={{ color: "darkgrey" }}>
+                            <span style={{ color: "black" }}>
                               {row.name}
                             </span>
                           </div>

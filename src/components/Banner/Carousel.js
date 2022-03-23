@@ -1,4 +1,4 @@
-import { makeStyles } from "@material-ui/core";
+import { makeStyles,CircularProgress } from "@material-ui/core";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import AliceCarousel from "react-alice-carousel";
@@ -10,16 +10,20 @@ import { numberWithCommas } from "../CoinsTable";
 const Carousel = () => {
   const [trending, setTrending] = useState([]);
   const { currency, symbol } = CryptoState();
+  const [loading, setloading] = useState(true)
 
   const fetchTrendingCoins = async () => {
     const { data } = await axios.get(TrendingCoins(currency));
 
     console.log(data);
     setTrending(data);
+
   };
 
   useEffect(() => {
     fetchTrendingCoins();
+    setTimeout(()=>setloading(!loading),100)
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currency]);
 
@@ -80,9 +84,11 @@ const Carousel = () => {
       items: 4,
     },
   };
-
+   
   return (
+    
     <div className={classes.carousel}>
+      {!loading ? 
       <AliceCarousel
         mouseTracking
         infinite
@@ -93,7 +99,13 @@ const Carousel = () => {
         responsive={responsive}
         items={items}
         autoPlay
-      />
+      />:
+      <CircularProgress
+  style={{ color: "gold" , justifyContent:"center",alignContent:"center",marginLeft:"45%"}}
+  size={150}
+  thickness={1}
+/>
+      }
     </div>
   );
 };

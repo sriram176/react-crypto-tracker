@@ -1,10 +1,12 @@
-import { Container, makeStyles, Typography } from "@material-ui/core";
+import { Container, makeStyles, Typography,Box,CircularProgress } from "@material-ui/core";
 import Carousel from "./Carousel";
+import React,{ Suspense } from 'react'
+// const Carousel = React.lazy(() => import("./Carousel"));
 
 const useStyles = makeStyles((theme) => ({
-  banner: {
-    backgroundImage: "url(./banner2.jpg)",
-  },
+  // banner: {
+  //   backgroundImage: theme.palette.type == 'light' ? "url(./whiteback.jpg)" : "url(./banner2.jpg)",
+  // },
   bannerContent: {
     height: 400,
     display: "flex",
@@ -26,11 +28,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Banner() {
+function Banner(props) {
   const classes = useStyles();
 
   return (
     <div className={classes.banner}>
+      
       <Container className={classes.bannerContent}>
         <div className={classes.tagline}>
           <Typography
@@ -46,7 +49,7 @@ function Banner() {
           <Typography
             variant="subtitle2"
             style={{
-              color: "darkgrey",
+              color: props.theme.palette.type == 'light' ? "black" : "white",
               textTransform: "capitalize",
               fontFamily: "Montserrat",
             }}
@@ -54,7 +57,13 @@ function Banner() {
             Get all the Info regarding your favorite Crypto Currency
           </Typography>
         </div>
-        <Carousel />
+        {/* <Suspense fallback={ <Box sx={{ display: 'flex', alignItems: 'center',
+          justifyContent: 'center' }}>
+      <CircularProgress />
+    </Box>}> */}
+				<Carousel />
+			{/* </Suspense> */}
+        
       </Container>
     </div>
   );
